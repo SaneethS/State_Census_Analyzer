@@ -37,6 +37,12 @@ public class CSVStateCensus {
 			CSVReader reader = new CSVReader(new FileReader(file));
 			String[] header = reader.readNext();
 			List<String[]> list = reader.readAll();
+			if(!checkDelimiters(list)) {
+				throw new StateCensusException("Invalid Delimiters!!");
+			}
+			if(!checkHeaders(header)) {
+				throw new StateCensusException("Invalid Header!!");
+			}
 			censusData = new CensusData(header,list);
 			reader.close();
 			
@@ -52,5 +58,31 @@ public class CSVStateCensus {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private boolean checkHeaders(String[] header) {
+		for(String h: header) {
+			if(h.equals("null") || h.equals(" ") || h.length() == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean checkDelimiters(List<String[]> list) {
+		if(list.size() == 0) {
+			return true;
+		}
+		int checkLength = 5;
+		if(list.size() < 5) {
+			checkLength = list.size();
+		}
+		int prevLength = list.get(0).length;
+		for(int i = 1; i < checkLength; i++) {
+			if(list.get(i).length != prevLength) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -46,4 +46,26 @@ public class StateCensusAnalyzerTest {
 			assertEquals(expected, result);
 		}
 	}
+	
+	@Test
+	public void fileContaininginvalidDelimeter() {
+		try {
+			csvStateCensus.loadCsv("data/censusdelimiter.csv");
+		} catch (StateCensusException e) {
+			String expected = "Invalid Delimiters!!";
+			String result = e.getMessage();
+			assertEquals(expected, result);
+		}
+	}
+	
+	@Test
+	public void fileContainingInvalidHeader() {
+		try {
+			csvStateCensus.loadCsv("data/censusheader.csv");
+		} catch (StateCensusException e) {
+			String expected = "Invalid Header!!";
+			String result = e.getMessage();
+			assertEquals(expected, result);
+		}
+	}
 }
